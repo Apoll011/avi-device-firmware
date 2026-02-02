@@ -1,0 +1,46 @@
+
+# ===== ESP-IDF build output =====
+**/build/
+**/sdkconfig
+**/sdkconfig.old
+**/sdkconfig.defaults
+
+# ===== CMake / Ninja =====
+**/CMakeCache.txt
+**/CMakeFiles/
+**/cmake_install.cmake
+**/compile_commands.json
+**/build.ninja
+**/rules.ninja
+**/.ninja_log
+**/.ninja_deps
+
+# ===== ESP-IDF Python / environment =====
+**/.idf/
+**/.espressif/
+**/.venv/
+**/venv/
+**/__pycache__/
+**/*.pyc
+
+# ===== ESP-IDF tooling =====
+**/flasher_args.json
+**/flash_args
+**/partition-table.bin
+**/*.bin
+**/*.elf
+**/*.map
+
+# ===== Logs =====
+**/*.log
+
+# ===== Editor / IDE =====
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+.DS_Store
+
+# ===== OS junk =====
+Thumbs.db
