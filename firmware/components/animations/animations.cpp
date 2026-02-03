@@ -1,6 +1,10 @@
 #include "animations.h"
 
-#include "config.h"
+#define NUM_LEDS 12
+#define LED_TYPE WS2812
+#define COLOR_ORDER GRB
+#define MAX_BRIGHTNESS 255
+#define MIN_BRIGHTNESS 20
 
 void LEDAnimations::setConfig(char* config) {
     configParser.setConfig(config);
