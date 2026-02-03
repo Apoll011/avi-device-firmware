@@ -63,17 +63,17 @@
     
     // Korvo v1.1 has 6 buttons on a resistor ladder connected to GPIO36 (ADC1_CH0)
     #define BUTTON_COUNT 6
-    #define BUTTON_ADC_CHANNEL ADC1_CHANNEL_0  // GPIO36
+    #define BUTTON_ADC_CHANNEL ADC1_CHANNEL_3  // GPIO36
     
     // Button voltage thresholds (in volts) for each button
     // These are approximate values - tune based on your actual hardware
     static const float BUTTON_THRESHOLDS[BUTTON_COUNT] = {
-        0.0f,   // Button 0: REC   - ~0V
-        0.5f,   // Button 1: MODE  - ~0.5V
-        1.0f,   // Button 2: PLAY  - ~1.0V
-        1.5f,   // Button 3: SET   - ~1.5V
-        2.0f,   // Button 4: VOL-  - ~2.0V
-        2.5f    // Button 5: VOL+  - ~2.5V
+        2.3f,   // Button 0: REC   - ~0V
+        1.98f,   // Button 1: MODE  - ~0.5V
+        1.65f,   // Button 2: PLAY  - ~1.0V
+        1.11f,   // Button 3: SET   - ~1.5V
+        0.82f,   // Button 4: VOL-  - ~2.0V
+        0.38f    // Button 5: VOL+  - ~2.5V
     };
     static const float BUTTON_TOLERANCE = 0.2f;  // ±0.2V tolerance
     
