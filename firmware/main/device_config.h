@@ -8,6 +8,9 @@
 
 #pragma once
 
+#include "driver/gpio.h"
+#include "driver/adc.h"
+
 // ============================================================================
 // Board Selection - Uncomment ONE
 // ============================================================================
@@ -34,6 +37,22 @@
 #define DEVICE_NAME    "Alex-Box"
 
 // ============================================================================
+// AVI Topics Configuration
+// ============================================================================
+
+// Subscriptions (device listens to these)
+#define TOPIC_LED_CONTROL       "device/led/control"
+#define TOPIC_LED_ANIMATION     "device/led/animation"
+#define TOPIC_LED_CLEAR         "device/led/clear"
+#define TOPIC_AUDIO_DATA        "device/audio/data"
+#define TOPIC_COMMAND           "device/command"
+
+// Publications (device sends to these)
+#define TOPIC_BUTTON_EVENT      "device/button/event"
+#define TOPIC_STATUS            "device/status"
+#define TOPIC_HEARTBEAT         "device/heartbeat"
+
+// ============================================================================
 // Board-Specific Feature Flags
 // ============================================================================
 
@@ -41,22 +60,35 @@
     #define FEATURE_AUDIO_OUTPUT
     #define FEATURE_BUTTON_INPUT
     #define FEATURE_LED_STRIP
-    #define FEATURE_MICROPHONE
     
-    // Korvo-specific pins
-    #define PIN_BUTTON_ADC      ADC1_CHANNEL_3  // GPIO39
+    // Korvo v1.1 has 6 buttons on a resistor ladder connected to GPIO36 (ADC1_CH0)
+    #define BUTTON_COUNT 6
+    #define BUTTON_ADC_CHANNEL ADC1_CHANNEL_0  // GPIO36
+    
+    // Button voltage thresholds (in volts) for each button
+    // These are approximate values - tune based on your actual hardware
+    static const float BUTTON_THRESHOLDS[BUTTON_COUNT] = {
+        0.0f,   // Button 0: REC   - ~0V
+        0.5f,   // Button 1: MODE  - ~0.5V
+        1.0f,   // Button 2: PLAY  - ~1.0V
+        1.5f,   // Button 3: SET   - ~1.5V
+        2.0f,   // Button 4: VOL-  - ~2.0V
+        2.5f    // Button 5: VOL+  - ~2.5V
+    };
+    static const float BUTTON_TOLERANCE = 0.2f;  // ±0.2V tolerance
+    
     #define PIN_LED_DATA        GPIO_NUM_22
-    #define PIN_I2S_BCK         GPIO_NUM_26
+    #define PIN_I2S_BCK         GPIO_NUM_27
     #define PIN_I2S_WS          GPIO_NUM_25
-    #define PIN_I2S_DATA_OUT    GPIO_NUM_22
+    #define PIN_I2S_DATA_OUT    GPIO_NUM_26
     
     #define LED_COUNT           12
-    #define BUTTON_VOLTAGE_THRESHOLD 1.5f
     
 #elif defined(BOARD_ESP32_DEVKIT_V1)
     #define FEATURE_BUTTON_INPUT
     #define FEATURE_LED_STRIP
     
+    #define BUTTON_COUNT        1
     #define PIN_BUTTON          GPIO_NUM_0
     #define PIN_LED_DATA        GPIO_NUM_5
     #define LED_COUNT           8

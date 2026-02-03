@@ -12,6 +12,7 @@
 #include <memory>
 #include <vector>
 #include "avi_embedded.h"
+
 #include "board_korvo.h"
 #include "led_controller.h"
 
@@ -30,7 +31,8 @@ public:
     virtual bool start() = 0;
     virtual void update() = 0;
     virtual void stop() = 0;
-    
+	virtual void handleMessage(const char* topic, size_t topic_len,    
+                               const uint8_t* data, size_t data_len);
     virtual const char* getName() const = 0;
 };
 
@@ -38,10 +40,11 @@ public:
  * @brief Button input feature
  * 
  * Monitors button state and reports press events via AVI
+ * Supports multiple buttons on resistor ladder (Korvo v1.1)
  */
 class ButtonFeature : public Feature {
 public:
-    ButtonFeature(AVI_AviEmbedded* avi, uint8_t button_id);
+    explicit ButtonFeature(AVI_AviEmbedded* avi);
     
     bool init() override;
     bool start() override;
@@ -51,11 +54,12 @@ public:
     const char* getName() const override { return "Button"; }
     
 private:
-    void handleButtonEvent(bool pressed, float voltage);
+    void handleButtonEvent(uint8_t button_id, bool pressed);
     
+	void handleMessage(const char* topic, size_t topic_len,
+                               const uint8_t* data, size_t data_len);
     AVI_AviEmbedded* m_avi;
-    uint8_t m_button_id;
-    std::unique_ptr<class Board::Button> m_button;
+    std::unique_ptr<class Board::ButtonController> m_button_controller;
 };
 
 /**
@@ -74,10 +78,11 @@ public:
     
     const char* getName() const override { return "LED"; }
     
-private:
-    void handleLedCommand(const char* topic, size_t topic_len,
-                         const uint8_t* data, size_t data_len);
+    void setConnected(bool connected);
+    void handleMessage(const char* topic, size_t topic_len,
+                      const uint8_t* data, size_t data_len);
     
+private:
     AVI_AviEmbedded* m_avi;
     std::unique_ptr<class LedController> m_leds;
     bool m_connected;
@@ -99,10 +104,10 @@ public:
     
     const char* getName() const override { return "Audio"; }
     
-private:
-    void handleAudioData(const char* topic, size_t topic_len,
-                        const uint8_t* data, size_t data_len);
+    void handleMessage(const char* topic, size_t topic_len,
+                      const uint8_t* data, size_t data_len);
     
+private:
     AVI_AviEmbedded* m_avi;
 };
 
@@ -121,6 +126,13 @@ public:
     bool startAll();
     void updateAll();
     void stopAll();
+    
+    void handleMessage(const char* topic, size_t topic_len,
+                      const uint8_t* data, size_t data_len);
+    
+#ifdef FEATURE_LED_STRIP
+    void setLedConnected(bool connected);
+#endif
     
 private:
     AVI_AviEmbedded* m_avi;

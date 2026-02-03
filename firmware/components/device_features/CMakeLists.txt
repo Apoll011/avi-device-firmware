@@ -8,6 +8,7 @@ idf_component_register(
 		"avi_embedded"	
 		main
 		driver
+		led_strip
 		"led"
 )
 

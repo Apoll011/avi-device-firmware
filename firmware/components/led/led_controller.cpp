@@ -11,7 +11,7 @@ LedController::LedController() {
     leds.resize(NUM_LEDS);
 }
 
-void LedController::init() {
+bool LedController::init() {
     ESP_LOGI(TAG, "Initializing LED Strip on GPIO %d", LED_PIN);
 
     led_strip_config_t strip_config = {
@@ -29,6 +29,8 @@ void LedController::init() {
 
     ESP_ERROR_CHECK(led_strip_new_rmt_device(&strip_config, &rmt_config, &led_strip));
     led_strip_clear(led_strip);
+
+	return true;
 }
 
 // ---------------------------------------------------------
@@ -125,6 +127,10 @@ void LedController::show() {
 
 void LedController::setPixel(int idx, RgbColor color) {
     if(idx >= 0 && idx < NUM_LEDS) leds[idx] = color;
+}
+
+void LedController::setLed(int idx, RgbColor color) {
+	if(idx >= 0 && idx < NUM_LEDS) leds[idx] = color;
 }
 
 void LedController::setAll(RgbColor color) {

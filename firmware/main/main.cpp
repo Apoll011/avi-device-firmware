@@ -217,7 +217,7 @@ private:
         
 #ifdef FEATURE_BUTTON_INPUT
         m_features->addFeature(
-            std::make_unique<Features::ButtonFeature>(m_client.getHandle(), 0)
+            std::make_unique<Features::ButtonFeature>(m_client.getHandle())
         );
 #endif
 

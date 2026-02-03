@@ -125,9 +125,10 @@ private:
 
 public:
     LedController();
-    void init();
+    bool init();
     void update(bool connected); // Call this in your main loop
     
+    void setLed(int idx, RgbColor color);
     void setAnimation(int type, int duration_ms, const char* config = "");
     void clear();
 };
