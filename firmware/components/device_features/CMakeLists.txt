@@ -1,13 +1,14 @@
 idf_component_register(
     SRCS 
-        "main.cpp"
+        "device_features.cpp"
     INCLUDE_DIRS 
-        "."
-    REQUIRES 
+        "include"
+    REQUIRES
         board_korvo
-        avi_transport
-        device_features
-        nvs_flash
+		"avi_embedded"	
+		main
+		driver
+		"led"
 )
 
 target_compile_options(${COMPONENT_LIB} PRIVATE -std=gnu++17)
