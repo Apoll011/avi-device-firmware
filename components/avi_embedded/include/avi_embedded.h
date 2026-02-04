@@ -54,17 +54,17 @@ int32_t avi_embedded_send_stream_data(struct AVI_AviEmbedded *avi, uint8_t local
 
 int32_t avi_embedded_close_stream(struct AVI_AviEmbedded *avi, uint8_t local_stream_id);
 
-int32_t avi_embedded_button_pressed(struct AVI_AviEmbedded *avi, uint8_t button_id, uint8_t press_type);
+int32_t avi_embedded_button_pressed(struct AVI_AviEmbedded *avi, uint8_t button_id, uint8_t press_type, const char *custom_data, uintptr_t custom_data_len);
 
-int32_t avi_embedded_update_sensor_temperature(struct AVI_AviEmbedded *avi, const char *sensor_name, uintptr_t sensor_name_len, float value);
+int32_t avi_embedded_update_sensor_temperature(struct AVI_AviEmbedded *avi, const char *sensor_name, uintptr_t sensor_name_len, float value, const char *custom_data, uintptr_t custom_data_len);
 
-int32_t avi_embedded_update_sensor_humidity(struct AVI_AviEmbedded *avi, const char *sensor_name, uintptr_t sensor_name_len, float value);
+int32_t avi_embedded_update_sensor_humidity(struct AVI_AviEmbedded *avi, const char *sensor_name, uintptr_t sensor_name_len, float value, const char *custom_data, uintptr_t custom_data_len);
 
-int32_t avi_embedded_update_sensor_battery(struct AVI_AviEmbedded *avi, const char *sensor_name, uintptr_t sensor_name_len, uint8_t value);
+int32_t avi_embedded_update_sensor_battery(struct AVI_AviEmbedded *avi, const char *sensor_name, uintptr_t sensor_name_len, uint8_t value, const char *custom_data, uintptr_t custom_data_len);
 
-int32_t avi_embedded_update_sensor_status(struct AVI_AviEmbedded *avi, const char *sensor_name, uintptr_t sensor_name_len, bool value);
+int32_t avi_embedded_update_sensor_status(struct AVI_AviEmbedded *avi, const char *sensor_name, uintptr_t sensor_name_len, bool value, const char *custom_data, uintptr_t custom_data_len);
 
-int32_t avi_embedded_update_sensor_raw(struct AVI_AviEmbedded *avi, const char *sensor_name, uintptr_t sensor_name_len, int32_t value);
+int32_t avi_embedded_update_sensor_raw(struct AVI_AviEmbedded *avi, const char *sensor_name, uintptr_t sensor_name_len, int32_t value, const char *custom_data, uintptr_t custom_data_len);
 
 #ifdef __cplusplus
 }  // extern "C"

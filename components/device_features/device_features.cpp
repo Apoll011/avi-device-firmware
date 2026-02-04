@@ -69,34 +69,23 @@ void ButtonFeature::stop() {
 }
 
 void ButtonFeature::handleButtonEvent(uint8_t button_id, bool pressed) {
-    // Button names for Korvo v1.1
     const char* button_names[6] = {"REC", "MODE", "PLAY", "SET", "VOL-", "VOL+"};
     
     const char* state_str = pressed ? "pressed" : "released";
-    ESP_LOGI(TAG, "🔘 Button %d (%s) %s", button_id, 
+    ESP_LOGI(TAG, "Button %d (%s) %s", button_id, 
              button_id < 6 ? button_names[button_id] : "UNKNOWN", state_str);
     
-    // Send button event via AVI
-    if (pressed) {
-        uint8_t press_type = 0; // Single press
-        int ret = avi_embedded_button_pressed(m_avi, button_id, press_type);
-        ESP_LOGD(TAG, "AVI button event sent [ret=%d]", ret);
-    }
-    
-    // Publish button event to topic
     char payload[128];
     snprintf(payload, sizeof(payload),
-             "{\"button\":%d,\"name\":\"%s\",\"state\":\"%s\"}",
+             "{\"button\":%d,\"name\":\"%s\"}",
              button_id,
-             button_id < 6 ? button_names[button_id] : "UNKNOWN",
-             state_str);
-    
-    int ret = avi_embedded_publish(m_avi, 
-                                    TOPIC_BUTTON_EVENT, 
-                                    strlen(TOPIC_BUTTON_EVENT),
-                                    (const uint8_t*)payload, 
-                                    strlen(payload));
-    ESP_LOGD(TAG, "Button event published [ret=%d]", ret);
+             button_id < 6 ? button_names[button_id] : "UNKNOWN");
+
+    if (pressed) {
+        uint8_t press_type = 0; // Single press
+        int ret = avi_embedded_button_pressed(m_avi, button_id, press_type, payload, strlen(payload));
+        ESP_LOGD(TAG, "AVI button event sent [ret=%d]", ret);
+    }
 }
 
 void ButtonFeature::handleMessage(const char* topic, size_t topic_len,
@@ -288,14 +277,14 @@ void AudioFeature::handleMessage(const char* topic, size_t topic_len,
     
     std::string topic_str(topic, topic_len);
     if (topic_str == TOPIC_AUDIO_DATA) {
-    size_t bytes_written;
-    esp_err_t ret = i2s_write(I2S_NUM_0, data, data_len, &bytes_written, portMAX_DELAY);
+	    size_t bytes_written;
+		esp_err_t ret = i2s_write(I2S_NUM_0, data, data_len, &bytes_written, portMAX_DELAY);
     
-    if (ret != ESP_OK) {
-        ESP_LOGW(TAG, "I2S write failed: %s", esp_err_to_name(ret));
-    } else {
-        ESP_LOGD(TAG, "🔊 Played %zu bytes of audio", bytes_written);
-    }
+	    if (ret != ESP_OK) {
+		    ESP_LOGW(TAG, "I2S write failed: %s", esp_err_to_name(ret));
+	    } else {
+	        ESP_LOGD(TAG, "🔊 Played %zu bytes of audio", bytes_written);
+	    }
 	}
 }
 
@@ -360,10 +349,14 @@ void FeatureManager::handleMessage(const char* topic, size_t topic_len,
                                    const uint8_t* data, size_t data_len) {
     std::string topic_str(topic, topic_len);
     
-    // Route messages to appropriate features
-        for (auto& feature : m_features) {
-                feature->handleMessage(topic, topic_len, data, data_len);
-        }
+	
+
+    ESP_LOGI(TAG, "Recived msg from topi: %sc", topic);
+    
+	// Route messages to appropriate features
+	//for (auto& feature : m_features) {
+    //    feature->handleMessage(topic, topic_len, data, data_len);
+    //}
 }
 
 } // namespace Features
