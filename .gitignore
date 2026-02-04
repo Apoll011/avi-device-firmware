@@ -14,7 +14,7 @@
 **/rules.ninja
 **/.ninja_log
 **/.ninja_deps
-
+managed_components
 # ===== ESP-IDF Python / environment =====
 **/.idf/
 **/.espressif/
