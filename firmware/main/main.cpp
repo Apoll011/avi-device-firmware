@@ -149,7 +149,6 @@ public:
         ESP_LOGI(TAG, "Application running");
         
         uint32_t loop_count = 0;
-        uint32_t last_status = 0;
         
         while (true) {
             loop_count++;
@@ -160,12 +159,6 @@ public:
             // Update all features
             if (m_features) {
                 m_features->updateAll();
-            }
-            
-            // Status logging (every 10 seconds)
-            if (loop_count - last_status >= 200) {
-                last_status = loop_count;
-                logStatus();
             }
             
             vTaskDelay(pdMS_TO_TICKS(MAIN_LOOP_INTERVAL_MS));
@@ -248,14 +241,6 @@ private:
         ESP_LOGI(TAG, "All features initialized and started");
     }
     
-    void logStatus() {
-        const char* wifi_status = m_wifi_connected ? "Connected" : "Disconnected";
-        const char* avi_status = m_client.isConnected() ? "Connected" : "Disconnected";
-        
-        ESP_LOGI(TAG, "Status - WiFi: %s | AVI: %s | Heap: %lu",
-                 wifi_status, avi_status, esp_get_free_heap_size());
-    }
-    
     AVI::WiFiManager m_wifi;
     AVI::UdpTransport m_transport;
     AviClient m_client;
@@ -283,7 +268,7 @@ static void app_task(void* pvParameters) {
 extern "C" void app_main() {
     ESP_LOGI(TAG, "");
     ESP_LOGI(TAG, "╔═══════════════════════════════════════╗");
-    ESP_LOGI(TAG, "║       AVI Embedded Firmware          ║");
+    ESP_LOGI(TAG, "║         AVI Embedded Firmware         ║");
     ESP_LOGI(TAG, "╚═══════════════════════════════════════╝");
     ESP_LOGI(TAG, "");
     ESP_LOGI(TAG, "Device:    %s", DEVICE_NAME);

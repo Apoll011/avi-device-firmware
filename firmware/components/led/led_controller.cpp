@@ -59,7 +59,7 @@ void LedController::update(bool connected) {
     }
 
     // Limit framerate to ~60FPS (16ms)
-    if (now - lastFrameTime < 16) return;
+    if (now - lastFrameTime < 6) return;
     lastFrameTime = now;
 
     // Run Animation Logic
